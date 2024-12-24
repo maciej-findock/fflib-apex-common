@@ -25,5 +25,5 @@
 **/
 public interface fflib_IServiceFactory
 {
-	Object newInstance(Type serviceInterfaceType);
+    Object newInstance(Type serviceInterfaceType);
 }

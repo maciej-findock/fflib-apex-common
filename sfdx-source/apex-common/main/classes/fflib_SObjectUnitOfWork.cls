@@ -90,7 +90,7 @@ public virtual class fflib_SObjectUnitOfWork
         void dmlUpdate(List<SObject> objList);
         void dmlDelete(List<SObject> objList);
         void eventPublish(List<SObject> objList);
-	    void emptyRecycleBin(List<SObject> objList);
+        void emptyRecycleBin(List<SObject> objList);
     }
 
     public virtual class SimpleDML implements IDML
@@ -116,40 +116,40 @@ public virtual class fflib_SObjectUnitOfWork
             
             EventBus.publish(objList);
         }
-		public virtual void emptyRecycleBin(List<SObject> objList)
-		{
-			if (objList.isEmpty())
-			{
-				return;
-			}
+        public virtual void emptyRecycleBin(List<SObject> objList)
+        {
+            if (objList.isEmpty())
+            {
+                return;
+            }
 
-			Database.emptyRecycleBin(objList);
-		}
+            Database.emptyRecycleBin(objList);
+        }
     }
 
-	public virtual class UserModeDML extends SimpleDML{
-		@TestVisible
-		private AccessLevel m_accessLevel;
+    public virtual class UserModeDML extends SimpleDML{
+        @TestVisible
+        private AccessLevel m_accessLevel;
 
-		public UserModeDML(){
-			this(AccessLevel.USER_MODE);
-		}
+        public UserModeDML(){
+            this(AccessLevel.USER_MODE);
+        }
 
-		/** Supply the AccessLevel explicitly (UserModeDML uses AccessMode.USER_MODE, by default) */
-		public UserModeDML(AccessLevel access){
-			m_accessLevel = access;
-		}
+        /** Supply the AccessLevel explicitly (UserModeDML uses AccessMode.USER_MODE, by default) */
+        public UserModeDML(AccessLevel access){
+            m_accessLevel = access;
+        }
 
-		public virtual override void dmlInsert(List<SObject> objList){
-			Database.insert(objList,m_accessLevel);
-		}
-		public virtual override void dmlUpdate(List<SObject> objList){
-			Database.update(objList,m_accessLevel);
-		}
-		public virtual override void dmlDelete(List<SObject> objList){
-			Database.delete(objList,m_accessLevel);
-		}
-	}
+        public virtual override void dmlInsert(List<SObject> objList){
+            Database.insert(objList,m_accessLevel);
+        }
+        public virtual override void dmlUpdate(List<SObject> objList){
+            Database.update(objList,m_accessLevel);
+        }
+        public virtual override void dmlDelete(List<SObject> objList){
+            Database.delete(objList,m_accessLevel);
+        }
+    }
 
 
     /**
@@ -172,7 +172,7 @@ public virtual class fflib_SObjectUnitOfWork
             handleRegisterType(sObjectType);
         }
 
-		m_relationships.put(Messaging.SingleEmailMessage.class.getName(), new Relationships());
+        m_relationships.put(Messaging.SingleEmailMessage.class.getName(), new Relationships());
 
         m_dml = dml;
     }
@@ -213,7 +213,7 @@ public virtual class fflib_SObjectUnitOfWork
         m_newListByType.put(sObjectName, new List<SObject>());
         m_dirtyMapByType.put(sObjectName, new Map<Id, SObject>());
         m_deletedMapByType.put(sObjectName, new Map<Id, SObject>());
-	    m_emptyRecycleBinMapByType.put(sObjectName, new Map<Id, SObject>());
+        m_emptyRecycleBinMapByType.put(sObjectName, new Map<Id, SObject>());
         m_relationships.put(sObjectName, new Relationships());
 
         m_publishBeforeListByType.put(sObjectName, new List<SObject>());
@@ -240,31 +240,31 @@ public virtual class fflib_SObjectUnitOfWork
         m_emailWork.registerEmail(email);
     }
 
-	/**
-	 * Register an deleted record to be removed from the recycle bin during the commitWork method
-	 *
-	 * @param record An deleted record
-	 **/
-	public void registerEmptyRecycleBin(SObject record)
-	{
-		String sObjectType = record.getSObjectType().getDescribe().getName();
-		assertForSupportedSObjectType(m_emptyRecycleBinMapByType, sObjectType);
+    /**
+     * Register an deleted record to be removed from the recycle bin during the commitWork method
+     *
+     * @param record An deleted record
+     **/
+    public void registerEmptyRecycleBin(SObject record)
+    {
+        String sObjectType = record.getSObjectType().getDescribe().getName();
+        assertForSupportedSObjectType(m_emptyRecycleBinMapByType, sObjectType);
 
-		m_emptyRecycleBinMapByType.get(sObjectType).put(record.Id, record);
-	}
+        m_emptyRecycleBinMapByType.get(sObjectType).put(record.Id, record);
+    }
 
-	/**
-	 * Register deleted records to be removed from the recycle bin during the commitWork method
-	 *
-	 * @param records Deleted records
-	 **/
-	public void registerEmptyRecycleBin(List<SObject> records)
-	{
-		for (SObject record : records)
-		{
-			registerEmptyRecycleBin(record);
-		}
-	}
+    /**
+     * Register deleted records to be removed from the recycle bin during the commitWork method
+     *
+     * @param records Deleted records
+     **/
+    public void registerEmptyRecycleBin(List<SObject> records)
+    {
+        for (SObject record : records)
+        {
+            registerEmptyRecycleBin(record);
+        }
+    }
 
     /**
      * Register a newly created SObject instance to be inserted when commitWork is called
@@ -303,8 +303,8 @@ public virtual class fflib_SObjectUnitOfWork
             throw new UnitOfWorkException('Only new records can be registered as new');
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForNonEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_newListByType, sObjectType);
+        assertForNonEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_newListByType, sObjectType);
 
         m_newListByType.get(sObjectType).add(record);
         if (relatedToParentRecord!=null && relatedToParentField!=null)
@@ -323,8 +323,8 @@ public virtual class fflib_SObjectUnitOfWork
     {
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForNonEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_newListByType, sObjectType);
+        assertForNonEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_newListByType, sObjectType);
 
         m_relationships.get(sObjectType).add(record, relatedToField, relatedTo);
     }
@@ -382,26 +382,26 @@ public virtual class fflib_SObjectUnitOfWork
      */
     public void registerDirty(List<SObject> records, List<SObjectField> dirtyFields)
     {
-	    for (SObject record : records)
-	    {
-		    registerDirty(record, dirtyFields);
-	    }
+        for (SObject record : records)
+        {
+            registerDirty(record, dirtyFields);
+        }
     }
 
-	/**
-	 * Registers the entire record as dirty or just only the dirty fields if the record was already registered
-	 *
-	 * @param record SObject to register as dirty
-	 * @param dirtyFields A list of modified fields
-	 */
+    /**
+     * Registers the entire record as dirty or just only the dirty fields if the record was already registered
+     *
+     * @param record SObject to register as dirty
+     * @param dirtyFields A list of modified fields
+     */
     public void registerDirty(SObject record, List<SObjectField> dirtyFields)
     {
         if (record.Id == null)
             throw new UnitOfWorkException('New records cannot be registered as dirty');
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForNonEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_dirtyMapByType, sObjectType);
+        assertForNonEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_dirtyMapByType, sObjectType);
 
         // If record isn't registered as dirty, or no dirty fields to drive a merge
         if (!m_dirtyMapByType.get(sObjectType).containsKey(record.Id) || dirtyFields.isEmpty())
@@ -432,7 +432,7 @@ public virtual class fflib_SObjectUnitOfWork
      **/
     public void registerDirty(SObject record, Schema.SObjectField relatedToParentField, SObject relatedToParentRecord)
     {
-	    registerDirty(record);
+        registerDirty(record);
         if (relatedToParentRecord!=null && relatedToParentField!=null)
             registerRelationship(record, relatedToParentField, relatedToParentRecord);
     }
@@ -491,8 +491,8 @@ public virtual class fflib_SObjectUnitOfWork
             throw new UnitOfWorkException('New records cannot be registered for deletion');
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForNonEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_deletedMapByType, sObjectType);
+        assertForNonEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_deletedMapByType, sObjectType);
 
         m_deletedMapByType.get(sObjectType).put(record.Id, record);
     }
@@ -510,25 +510,25 @@ public virtual class fflib_SObjectUnitOfWork
         }
     }
 
-	/**
+    /**
      * Register a list of existing records to be deleted and removed from the recycle bin during the commitWork method
      *
      * @param records A list of existing records
      **/
     public void registerPermanentlyDeleted(List<SObject> records)
     {
-	    this.registerEmptyRecycleBin(records);
-	    this.registerDeleted(records);
+        this.registerEmptyRecycleBin(records);
+        this.registerDeleted(records);
     }
 
-	/**
+    /**
      * Register a list of existing records to be deleted and removed from the recycle bin during the commitWork method
      *
      * @param record A list of existing records
      **/
     public void registerPermanentlyDeleted(SObject record)
     {
-	    this.registerEmptyRecycleBin(record);
+        this.registerEmptyRecycleBin(record);
         this.registerDeleted(record);
     }
 
@@ -541,8 +541,8 @@ public virtual class fflib_SObjectUnitOfWork
     {
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_publishBeforeListByType, sObjectType);
+        assertForEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_publishBeforeListByType, sObjectType);
 
         m_publishBeforeListByType.get(sObjectType).add(record);
     }
@@ -569,8 +569,8 @@ public virtual class fflib_SObjectUnitOfWork
     {
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_publishAfterSuccessListByType, sObjectType);
+        assertForEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_publishAfterSuccessListByType, sObjectType);
 
         m_publishAfterSuccessListByType.get(sObjectType).add(record);
     }
@@ -596,8 +596,8 @@ public virtual class fflib_SObjectUnitOfWork
     {
         String sObjectType = record.getSObjectType().getDescribe().getName();
 
-		assertForEventSObjectType(sObjectType);
-		assertForSupportedSObjectType(m_publishAfterFailureListByType, sObjectType);
+        assertForEventSObjectType(sObjectType);
+        assertForSupportedSObjectType(m_publishAfterFailureListByType, sObjectType);
 
         m_publishAfterFailureListByType.get(sObjectType).add(record);
     }
@@ -618,189 +618,189 @@ public virtual class fflib_SObjectUnitOfWork
     /**
      * Takes all the work that has been registered with the UnitOfWork and commits it to the database
      **/
-	public void commitWork()
-	{
-		Savepoint sp = Database.setSavepoint();
-		Boolean wasSuccessful = false;
-		try
-		{
-			doCommitWork();
-			wasSuccessful = true;
-		}
-		catch (Exception e)
-		{
-			Database.rollback(sp);
-			throw e;
-		}
-		finally
-		{
-			doAfterCommitWorkSteps(wasSuccessful);
-		}
-	}
+    public void commitWork()
+    {
+        Savepoint sp = Database.setSavepoint();
+        Boolean wasSuccessful = false;
+        try
+        {
+            doCommitWork();
+            wasSuccessful = true;
+        }
+        catch (Exception e)
+        {
+            Database.rollback(sp);
+            throw e;
+        }
+        finally
+        {
+            doAfterCommitWorkSteps(wasSuccessful);
+        }
+    }
 
-	private void doCommitWork()
-	{
-		onCommitWorkStarting();
-		onPublishBeforeEventsStarting();
-		publishBeforeEventsStarting();
-		onPublishBeforeEventsFinished();
+    private void doCommitWork()
+    {
+        onCommitWorkStarting();
+        onPublishBeforeEventsStarting();
+        publishBeforeEventsStarting();
+        onPublishBeforeEventsFinished();
 
-		onDMLStarting();
-		insertDmlByType();
-		updateDmlByType();
-		deleteDmlByType();
-		emptyRecycleBinByType();
-		resolveEmailRelationships();
-		onDMLFinished();
+        onDMLStarting();
+        insertDmlByType();
+        updateDmlByType();
+        deleteDmlByType();
+        emptyRecycleBinByType();
+        resolveEmailRelationships();
+        onDMLFinished();
 
-		onDoWorkStarting();
-		doWork();
-		onDoWorkFinished();
-		onCommitWorkFinishing();
-	}
+        onDoWorkStarting();
+        doWork();
+        onDoWorkFinished();
+        onCommitWorkFinishing();
+    }
 
-	private void doAfterCommitWorkSteps(Boolean wasSuccessful)
-	{
-		if (wasSuccessful)
-		{
-			doAfterCommitWorkSuccessSteps();
-		}
-		else
-		{
-			doAfterCommitWorkFailureSteps();
-		}
-		onCommitWorkFinished(wasSuccessful);
-	}
+    private void doAfterCommitWorkSteps(Boolean wasSuccessful)
+    {
+        if (wasSuccessful)
+        {
+            doAfterCommitWorkSuccessSteps();
+        }
+        else
+        {
+            doAfterCommitWorkFailureSteps();
+        }
+        onCommitWorkFinished(wasSuccessful);
+    }
 
-	private void doAfterCommitWorkSuccessSteps()
-	{
-		onPublishAfterSuccessEventsStarting();
-		publishAfterSuccessEvents();
-		onPublishAfterSuccessEventsFinished();
-	}
+    private void doAfterCommitWorkSuccessSteps()
+    {
+        onPublishAfterSuccessEventsStarting();
+        publishAfterSuccessEvents();
+        onPublishAfterSuccessEventsFinished();
+    }
 
-	private void doAfterCommitWorkFailureSteps()
-	{
-		onPublishAfterFailureEventsStarting();
-		publishAfterFailureEvents();
-		onPublishAfterFailureEventsFinished();
-	}
+    private void doAfterCommitWorkFailureSteps()
+    {
+        onPublishAfterFailureEventsStarting();
+        publishAfterFailureEvents();
+        onPublishAfterFailureEventsFinished();
+    }
 
-	private void publishBeforeEventsStarting()
-	{
-		for (Schema.SObjectType sObjectType : m_sObjectTypes)
-		{
-			m_dml.eventPublish(m_publishBeforeListByType.get(sObjectType.getDescribe().getName()));
-		}
-	}
+    private void publishBeforeEventsStarting()
+    {
+        for (Schema.SObjectType sObjectType : m_sObjectTypes)
+        {
+            m_dml.eventPublish(m_publishBeforeListByType.get(sObjectType.getDescribe().getName()));
+        }
+    }
 
-	private void insertDmlByType()
-	{
-		for (Schema.SObjectType sObjectType : m_sObjectTypes)
-		{
-			m_relationships.get(sObjectType.getDescribe().getName()).resolve();
-			m_dml.dmlInsert(m_newListByType.get(sObjectType.getDescribe().getName()));
-		}
-	}
+    private void insertDmlByType()
+    {
+        for (Schema.SObjectType sObjectType : m_sObjectTypes)
+        {
+            m_relationships.get(sObjectType.getDescribe().getName()).resolve();
+            m_dml.dmlInsert(m_newListByType.get(sObjectType.getDescribe().getName()));
+        }
+    }
 
-	private void updateDmlByType()
-	{
-		for (Schema.SObjectType sObjectType : m_sObjectTypes)
-		{
-			m_dml.dmlUpdate(m_dirtyMapByType.get(sObjectType.getDescribe().getName()).values());
-		}
-	}
+    private void updateDmlByType()
+    {
+        for (Schema.SObjectType sObjectType : m_sObjectTypes)
+        {
+            m_dml.dmlUpdate(m_dirtyMapByType.get(sObjectType.getDescribe().getName()).values());
+        }
+    }
 
-	private void deleteDmlByType()
-	{
-		Integer objectIdx = m_sObjectTypes.size() - 1;
-		while (objectIdx >= 0)
-		{
-			m_dml.dmlDelete(m_deletedMapByType.get(m_sObjectTypes[objectIdx--].getDescribe().getName()).values());
-		}
-	}
+    private void deleteDmlByType()
+    {
+        Integer objectIdx = m_sObjectTypes.size() - 1;
+        while (objectIdx >= 0)
+        {
+            m_dml.dmlDelete(m_deletedMapByType.get(m_sObjectTypes[objectIdx--].getDescribe().getName()).values());
+        }
+    }
 
-	private void emptyRecycleBinByType()
-	{
-		Integer objectIdx = m_sObjectTypes.size() - 1;
-		while (objectIdx >= 0)
-		{
-			m_dml.emptyRecycleBin(m_emptyRecycleBinMapByType.get(m_sObjectTypes[objectIdx--].getDescribe().getName()).values());
-		}
-	}
+    private void emptyRecycleBinByType()
+    {
+        Integer objectIdx = m_sObjectTypes.size() - 1;
+        while (objectIdx >= 0)
+        {
+            m_dml.emptyRecycleBin(m_emptyRecycleBinMapByType.get(m_sObjectTypes[objectIdx--].getDescribe().getName()).values());
+        }
+    }
 
-	private void resolveEmailRelationships()
-	{
-		m_relationships.get(Messaging.SingleEmailMessage.class.getName()).resolve();
-	}
+    private void resolveEmailRelationships()
+    {
+        m_relationships.get(Messaging.SingleEmailMessage.class.getName()).resolve();
+    }
 
-	private void doWork()
-	{
-		m_workList.add(m_emailWork);
-		for (IDoWork work : m_workList)
-		{
-			work.doWork();
-		}
-	}
+    private void doWork()
+    {
+        m_workList.add(m_emailWork);
+        for (IDoWork work : m_workList)
+        {
+            work.doWork();
+        }
+    }
 
-	private void publishAfterSuccessEvents()
-	{
-		for (Schema.SObjectType sObjectType : m_sObjectTypes)
-		{
-			m_dml.eventPublish(m_publishAfterSuccessListByType.get(sObjectType.getDescribe().getName()));
-		}
-	}
+    private void publishAfterSuccessEvents()
+    {
+        for (Schema.SObjectType sObjectType : m_sObjectTypes)
+        {
+            m_dml.eventPublish(m_publishAfterSuccessListByType.get(sObjectType.getDescribe().getName()));
+        }
+    }
 
-	private void publishAfterFailureEvents()
-	{
-		for (Schema.SObjectType sObjectType : m_sObjectTypes)
-		{
-			m_dml.eventPublish(m_publishAfterFailureListByType.get(sObjectType.getDescribe().getName()));
-		}
-	}
+    private void publishAfterFailureEvents()
+    {
+        for (Schema.SObjectType sObjectType : m_sObjectTypes)
+        {
+            m_dml.eventPublish(m_publishAfterFailureListByType.get(sObjectType.getDescribe().getName()));
+        }
+    }
 
-	@TestVisible
-	private void assertForNonEventSObjectType(String sObjectType)
-	{
-		if (sObjectType.length() > 3 && sObjectType.right(3)  == '__e')
-		{
-			throw new UnitOfWorkException(
-					String.format(
-							'SObject type {0} must use registerPublishBeforeTransaction or ' +
-									'registerPublishAfterTransaction methods to be used within this unit of work',
-							new List<String> { sObjectType }
-					)
-			);
-		}
-	}
+    @TestVisible
+    private void assertForNonEventSObjectType(String sObjectType)
+    {
+        if (sObjectType.length() > 3 && sObjectType.right(3)  == '__e')
+        {
+            throw new UnitOfWorkException(
+                    String.format(
+                            'SObject type {0} must use registerPublishBeforeTransaction or ' +
+                                    'registerPublishAfterTransaction methods to be used within this unit of work',
+                            new List<String> { sObjectType }
+                    )
+            );
+        }
+    }
 
-	@TestVisible
-	private void assertForEventSObjectType(String sObjectType)
-	{
-		if (sObjectType.length() > 3 && sObjectType.right(3) != '__e')
-		{
-			throw new UnitOfWorkException(
-					String.format(
-							'SObject type {0} is invalid for publishing within this unit of work',
-							new List<String> {sObjectType}
-					)
-			);
-		}
-	}
+    @TestVisible
+    private void assertForEventSObjectType(String sObjectType)
+    {
+        if (sObjectType.length() > 3 && sObjectType.right(3) != '__e')
+        {
+            throw new UnitOfWorkException(
+                    String.format(
+                            'SObject type {0} is invalid for publishing within this unit of work',
+                            new List<String> {sObjectType}
+                    )
+            );
+        }
+    }
 
-	@TestVisible
-	private void assertForSupportedSObjectType(Map<String, Object> theMap, String sObjectType)
-	{
-		if (!theMap.containsKey(sObjectType))
-		{
-			throw new UnitOfWorkException(
-					String.format(
-							'SObject type {0} is not supported by this unit of work',
-							new List<String> { sObjectType }
-					)
-			);
-		}
-	}
+    @TestVisible
+    private void assertForSupportedSObjectType(Map<String, Object> theMap, String sObjectType)
+    {
+        if (!theMap.containsKey(sObjectType))
+        {
+            throw new UnitOfWorkException(
+                    String.format(
+                            'SObject type {0} is not supported by this unit of work',
+                            new List<String> { sObjectType }
+                    )
+            );
+        }
+    }
 
     private class Relationships
     {

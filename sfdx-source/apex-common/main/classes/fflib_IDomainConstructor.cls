@@ -25,5 +25,5 @@
 **/
 public interface fflib_IDomainConstructor
 {
-	fflib_IDomain construct(List<Object> objects);
+    fflib_IDomain construct(List<Object> objects);
 }

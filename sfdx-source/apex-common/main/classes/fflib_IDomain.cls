@@ -25,6 +25,6 @@
 **/
 public interface fflib_IDomain
 {
-	Object getType();
-	List<Object> getObjects();
+    Object getType();
+    List<Object> getObjects();
 }

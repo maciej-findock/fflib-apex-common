@@ -252,9 +252,9 @@ private with sharing class fflib_SObjectUnitOfWorkTest
     /**
      * Create uow with new records and commit
      *
-     *	Testing:
+     *    Testing:
      *
-     *		- Correct events are fired when commitWork completes successfully
+     *        - Correct events are fired when commitWork completes successfully
      *
      */
     @IsTest
@@ -311,9 +311,9 @@ private with sharing class fflib_SObjectUnitOfWorkTest
     /**
      * Create uow with data that results in DML Exception
      *
-     *	Testing:
+     *    Testing:
      *
-     *		- Correct events are fired when commitWork fails during DML processing
+     *        - Correct events are fired when commitWork fails during DML processing
      *
      */
     @IsTest
@@ -353,9 +353,9 @@ private with sharing class fflib_SObjectUnitOfWorkTest
     /**
      * Create uow with work that fails
      *
-     *	Testing:
+     *    Testing:
      *
-     *		- Correct events are fired when commitWork fails during DoWork processing
+     *        - Correct events are fired when commitWork fails during DoWork processing
      *
      */
     @isTest

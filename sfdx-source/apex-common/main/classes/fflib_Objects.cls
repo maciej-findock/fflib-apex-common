@@ -25,89 +25,89 @@
 **/
 public virtual class fflib_Objects implements fflib_IObjects
 {
-	protected List<Object> objects { get; private set;} { objects = new List<Object>(); }
+    protected List<Object> objects { get; private set;} { objects = new List<Object>(); }
 
-	/**
-	 * Class constructor
-	 */
-	public fflib_Objects(List<Object> objects)
-	{
-		this.objects = objects.clone();
-	}
+    /**
+     * Class constructor
+     */
+    public fflib_Objects(List<Object> objects)
+    {
+        this.objects = objects.clone();
+    }
 
-	public virtual Object getType()
-	{
-		return Object.class;
-	}
+    public virtual Object getType()
+    {
+        return Object.class;
+    }
 
-	public List<Object> getObjects()
-	{
-		return this.objects;
-	}
+    public List<Object> getObjects()
+    {
+        return this.objects;
+    }
 
-	public Boolean contains(Object value)
-	{
-		return getObjects()?.contains(value);
-	}
+    public Boolean contains(Object value)
+    {
+        return getObjects()?.contains(value);
+    }
 
-	public Boolean containsAll(List<Object> values)
-	{
-		if (values == null) return false;
+    public Boolean containsAll(List<Object> values)
+    {
+        if (values == null) return false;
 
-		return containsAll(new Set<Object>(values));
-	}
+        return containsAll(new Set<Object>(values));
+    }
 
-	public Boolean containsAll(Set<Object> values)
-	{
-		if (values == null) return false;
+    public Boolean containsAll(Set<Object> values)
+    {
+        if (values == null) return false;
 
-		for (Object value : values)
-		{
-			if (!getObjects()?.contains(value)) return false;
-		}
-		return true;
-	}
+        for (Object value : values)
+        {
+            if (!getObjects()?.contains(value)) return false;
+        }
+        return true;
+    }
 
-	public Boolean containsNot(Object value)
-	{
-		return !contains(value);
-	}
+    public Boolean containsNot(Object value)
+    {
+        return !contains(value);
+    }
 
-	public Boolean containsNot(List<Object> values)
-	{
-		if (values == null) return true;
+    public Boolean containsNot(List<Object> values)
+    {
+        if (values == null) return true;
 
-		return containsNot(new Set<Object>(values));
-	}
+        return containsNot(new Set<Object>(values));
+    }
 
-	public Boolean containsNot(Set<Object> values)
-	{
-		if (values == null) return true;
+    public Boolean containsNot(Set<Object> values)
+    {
+        if (values == null) return true;
 
-		for (Object value : values)
-		{
-			if (getObjects()?.contains(value)) return false;
-		}
-		return true;
-	}
+        for (Object value : values)
+        {
+            if (getObjects()?.contains(value)) return false;
+        }
+        return true;
+    }
 
-	public Boolean isEmpty()
-	{
-		return (getObjects() == null || getObjects().isEmpty());
-	}
+    public Boolean isEmpty()
+    {
+        return (getObjects() == null || getObjects().isEmpty());
+    }
 
-	public Boolean isNotEmpty()
-	{
-		return !isEmpty();
-	}
+    public Boolean isNotEmpty()
+    {
+        return !isEmpty();
+    }
 
-	public Integer size()
-	{
-		return getObjects().size();
-	}
+    public Integer size()
+    {
+        return getObjects().size();
+    }
 
-	protected void setObjects(List<Object> objects)
-	{
-		this.objects = objects;
-	}
+    protected void setObjects(List<Object> objects)
+    {
+        this.objects = objects;
+    }
 }

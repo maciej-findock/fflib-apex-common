@@ -48,57 +48,57 @@ public class fflib_SecurityUtils
      * level. Sharing and field level security issues will never cause this.
      **/
     public class CrudException extends SecurityException{
-    	
-    	private CrudException(OperationType operation, Schema.SObjectType objectType){
-    		this.m_operation = operation;
-    		this.m_objectType = objectType;
-    		if(operation == OperationType.CREATE)
-    			this.setMessage(System.Label.fflib_security_error_object_not_insertable);
-    		else if(operation == OperationType.READ)
-    			this.setMessage(System.Label.fflib_security_error_object_not_readable);
-    		else if(operation == OperationType.MODIFY)
-    			this.setMessage(System.Label.fflib_security_error_object_not_updateable);
-    		else if(operation == OperationType.DEL)
-    			this.setMessage(System.Label.fflib_security_error_object_not_deletable);
+        
+        private CrudException(OperationType operation, Schema.SObjectType objectType){
+            this.m_operation = operation;
+            this.m_objectType = objectType;
+            if(operation == OperationType.CREATE)
+                this.setMessage(System.Label.fflib_security_error_object_not_insertable);
+            else if(operation == OperationType.READ)
+                this.setMessage(System.Label.fflib_security_error_object_not_readable);
+            else if(operation == OperationType.MODIFY)
+                this.setMessage(System.Label.fflib_security_error_object_not_updateable);
+            else if(operation == OperationType.DEL)
+                this.setMessage(System.Label.fflib_security_error_object_not_deletable);
 
-    		this.setMessage(
-    			String.format(
-    				this.getMessage(),
-    				new List<String>{
-    					objectType.getDescribe().getName()
-    				} 
-    			)
-    		);
-    	}
+            this.setMessage(
+                String.format(
+                    this.getMessage(),
+                    new List<String>{
+                        objectType.getDescribe().getName()
+                    } 
+                )
+            );
+        }
     }
     /**
      * FlsException represents a running user's lack of field level security to a specific field at a profile (or permission set) level
      * Sharing and CRUD security issues will never cause this to be thrown.
      **/
     public class FlsException extends SecurityException{
-    	private Schema.SObjectField m_fieldToken;
+        private Schema.SObjectField m_fieldToken;
 
-    	private FlsException(OperationType operation, Schema.SObjectType objectType, Schema.SObjectField fieldToken){
-    		this.m_operation = operation;
-    		this.m_objectType = objectType;
-    		this.m_fieldToken = fieldToken;
-    		if(operation == OperationType.CREATE)
-    			this.setMessage(System.Label.fflib_security_error_field_not_insertable);
-    		else if(operation == OperationType.READ)
-    			this.setMessage(System.Label.fflib_security_error_field_not_readable);
-    		else if(operation == OperationType.MODIFY)
-    			this.setMessage(System.Label.fflib_security_error_field_not_updateable);
+        private FlsException(OperationType operation, Schema.SObjectType objectType, Schema.SObjectField fieldToken){
+            this.m_operation = operation;
+            this.m_objectType = objectType;
+            this.m_fieldToken = fieldToken;
+            if(operation == OperationType.CREATE)
+                this.setMessage(System.Label.fflib_security_error_field_not_insertable);
+            else if(operation == OperationType.READ)
+                this.setMessage(System.Label.fflib_security_error_field_not_readable);
+            else if(operation == OperationType.MODIFY)
+                this.setMessage(System.Label.fflib_security_error_field_not_updateable);
 
-    		this.setMessage(
-    			String.format(
-	    			this.getMessage(),
-	    			new List<String>{
-	    				objectType.getDescribe().getName(),
-	    				fieldToken.getDescribe().getName()
-	    			}
-	    		)
-    		);
-    	}
+            this.setMessage(
+                String.format(
+                    this.getMessage(),
+                    new List<String>{
+                        objectType.getDescribe().getName(),
+                        fieldToken.getDescribe().getName()
+                    }
+                )
+            );
+        }
     }
     
     /**
@@ -110,7 +110,7 @@ public class fflib_SecurityUtils
     public static Boolean BYPASS_INTERNAL_FLS_AND_CRUD = false;
 
     /**
-	 * Check{Insert,Read,Update} methods check both FLS and CRUD
+     * Check{Insert,Read,Update} methods check both FLS and CRUD
     **/
     
     /**
@@ -120,11 +120,11 @@ public class fflib_SecurityUtils
      **/
     public static void checkInsert(SObjectType objType, List<String> fieldNames)
     {
-    	checkObjectIsInsertable(objType);
-    	for (String fieldName : fieldNames)
-    	{
-    		checkFieldIsInsertable(objType, fieldName);
-    	}
+        checkObjectIsInsertable(objType);
+        for (String fieldName : fieldNames)
+        {
+            checkFieldIsInsertable(objType, fieldName);
+        }
     }
     
     /**
@@ -134,11 +134,11 @@ public class fflib_SecurityUtils
      **/
     public static void checkInsert(SObjectType objType, List<SObjectField> fieldTokens)
     {
-    	checkObjectIsInsertable(objType);
-    	for (SObjectField fieldToken : fieldTokens)
-    	{
-    		checkFieldIsInsertable(objType, fieldToken);
-    	}
+        checkObjectIsInsertable(objType);
+        for (SObjectField fieldToken : fieldTokens)
+        {
+            checkFieldIsInsertable(objType, fieldToken);
+        }
     }
 
     /**
@@ -198,7 +198,7 @@ public class fflib_SecurityUtils
     }
 
     /**
-	 * CheckFieldIs* method check only FLS
+     * CheckFieldIs* method check only FLS
     **/
 
     /**
@@ -225,8 +225,8 @@ public class fflib_SecurityUtils
     **/
     public static void checkFieldIsInsertable(SObjectType objType, DescribeFieldResult fieldDescribe)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
-    	    return;
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
+            return;
         if (!fieldDescribe.isCreateable())
             throw new FlsException(OperationType.CREATE, objType, fieldDescribe.getSObjectField());
     }
@@ -237,7 +237,7 @@ public class fflib_SecurityUtils
     **/
     public static void checkFieldIsReadable(SObjectType objType, String fieldName)
     {
-    	checkFieldIsReadable(objType, fflib_SObjectDescribe.getDescribe(objType).getField(fieldName));
+        checkFieldIsReadable(objType, fflib_SObjectDescribe.getDescribe(objType).getField(fieldName));
     }
 
     /**
@@ -246,7 +246,7 @@ public class fflib_SecurityUtils
     **/
     public static void checkFieldIsReadable(SObjectType objType, SObjectField fieldToken)
     {
-    	checkFieldIsReadable(objType, fieldToken.getDescribe());
+        checkFieldIsReadable(objType, fieldToken.getDescribe());
     }
 
     /**
@@ -255,9 +255,9 @@ public class fflib_SecurityUtils
     **/
     public static void checkFieldIsReadable(SObjectType objType, DescribeFieldResult fieldDescribe)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
-    	if (!fieldDescribe.isAccessible())
+        if (!fieldDescribe.isAccessible())
             throw new FlsException(OperationType.READ, objType, fieldDescribe.getSObjectField());
     }
     
@@ -286,15 +286,15 @@ public class fflib_SecurityUtils
     **/
     public static void checkFieldIsUpdateable(SObjectType objType, DescribeFieldResult fieldDescribe)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
         if (!fieldDescribe.isUpdateable())
             throw new FlsException(OperationType.MODIFY, objType, fieldDescribe.getSObjectField());
-	}
+    }
 
-	/**
-	 * CheckObjectIs* methods check only CRUD
-	**/
+    /**
+     * CheckObjectIs* methods check only CRUD
+    **/
     
     /**
      * Checks insert CRUD for the specified object type.
@@ -302,12 +302,12 @@ public class fflib_SecurityUtils
     **/
     public static void checkObjectIsInsertable(SObjectType objType)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
-    	if (!objType.getDescribe().isCreateable())
-    	{
-    		throw new CrudException(OperationType.CREATE, objType);
-    	}
+        if (!objType.getDescribe().isCreateable())
+        {
+            throw new CrudException(OperationType.CREATE, objType);
+        }
     }
     
     /**
@@ -316,10 +316,10 @@ public class fflib_SecurityUtils
     **/
     public static void checkObjectIsReadable(SObjectType objType)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
         if (!objType.getDescribe().isAccessible())
-        	throw new CrudException(OperationType.READ, objType);
+            throw new CrudException(OperationType.READ, objType);
     }
 
     /**
@@ -328,10 +328,10 @@ public class fflib_SecurityUtils
     **/    
     public static void checkObjectIsUpdateable(SObjectType objType)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
         if (!objType.getDescribe().isUpdateable())
-        	throw new CrudException(OperationType.MODIFY, objType);
+            throw new CrudException(OperationType.MODIFY, objType);
     }
 
     /**
@@ -340,7 +340,7 @@ public class fflib_SecurityUtils
     **/    
     public static void checkObjectIsDeletable(SObjectType objType)
     {
-    	if (BYPASS_INTERNAL_FLS_AND_CRUD)
+        if (BYPASS_INTERNAL_FLS_AND_CRUD)
             return;
         if (!objType.getDescribe().isDeletable())
             throw new CrudException(OperationType.DEL, objType);
